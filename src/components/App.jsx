@@ -1,4 +1,4 @@
-import React, { PureComponent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Gallery } from "./Gallery/Gallery";
 import { Searchbar } from "./Searchbar/Searchbar";
 import { Warning } from "./App.styled";

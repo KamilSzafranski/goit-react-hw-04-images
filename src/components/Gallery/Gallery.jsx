@@ -18,16 +18,8 @@ import { useGallery } from "hooks/useGallery";
 import { useModal } from "hooks/useModal";
 
 export const Gallery = ({ searchValue }) => {
-  const {
-    gallery,
-    page,
-    loader,
-    searchNothing,
-    isPhotoLeft,
-    handleSearch,
-    handlePagination,
-    handleClick,
-  } = useGallery(searchValue);
+  const { gallery, page, loader, searchNothing, isPhotoLeft, handleClick } =
+    useGallery(searchValue);
 
   const { id, handleCloseModal, handleModal } = useModal();
 

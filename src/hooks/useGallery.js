@@ -70,8 +70,6 @@ export const useGallery = searchValue => {
     loader,
     searchNothing,
     isPhotoLeft,
-    handleSearch,
-    handlePagination,
     handleClick,
   };
 };
