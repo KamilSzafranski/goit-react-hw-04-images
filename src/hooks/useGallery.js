@@ -9,6 +9,31 @@ export const useGallery = searchValue => {
   const [isPhotoLeft, setIsPhotoLeft] = useState(true);
 
   useEffect(() => {
+    const handleSearch = async () => {
+      setLoader(true);
+      setSearchNothing(false);
+      setPage(() => 1);
+      setGallery(() => []);
+
+      console.log("handleSearch");
+
+      try {
+        const galleryImages = await fetchGallery(searchValue);
+        if (galleryImages.hits.length === 0) setSearchNothing(true);
+
+        setGallery(galleryImages.hits);
+
+        if (galleryImages.totalHits <= 12) {
+          setIsPhotoLeft(false);
+        } else {
+          setIsPhotoLeft(true);
+        }
+      } catch (error) {
+      } finally {
+        setLoader(false);
+      }
+    };
+
     if (searchValue) handleSearch();
   }, [searchValue]);
 
@@ -30,31 +55,6 @@ export const useGallery = searchValue => {
 
     if (searchValue && page !== 1) handlePagination();
   }, [page]);
-
-  const handleSearch = useCallback(async () => {
-    setLoader(true);
-    setSearchNothing(false);
-    setPage(() => 1);
-    setGallery(() => []);
-
-    console.log("handleSearch");
-
-    try {
-      const galleryImages = await fetchGallery(searchValue);
-      if (galleryImages.hits.length === 0) setSearchNothing(true);
-
-      setGallery(galleryImages.hits);
-
-      if (galleryImages.totalHits <= 12) {
-        setIsPhotoLeft(false);
-      } else {
-        setIsPhotoLeft(true);
-      }
-    } catch (error) {
-    } finally {
-      setLoader(false);
-    }
-  }, [searchValue]);
 
   const handleClick = event => {
     event.preventDefault();

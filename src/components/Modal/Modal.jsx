@@ -3,17 +3,20 @@ import { Overlay, ModalDiv } from "./Modal.styled";
 import PropTypes from "prop-types";
 
 export const Modal = ({ handleCloseModal, image }) => {
-  const closeOnKey = useCallback(event => {
-    if (event.code === "Escape") {
-      handleCloseModal();
-    }
-  }, []);
+  const closeOnKey = useCallback(
+    event => {
+      if (event.code === "Escape") {
+        handleCloseModal();
+      }
+    },
+    [handleCloseModal]
+  );
 
   useEffect(() => {
     window.addEventListener("keydown", closeOnKey);
 
     return () => window.removeEventListener("keydown", closeOnKey);
-  }, []);
+  }, [closeOnKey]);
 
   return (
     <Overlay onClick={handleCloseModal}>
