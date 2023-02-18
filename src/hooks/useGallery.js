@@ -38,22 +38,22 @@ export const useGallery = searchValue => {
   }, [searchValue]);
 
   useEffect(() => {
-    const handlePagination = async () => {
-      setLoader(true);
-      try {
-        const galleryImages = await fetchGallery(searchValue, page);
+    if (page !== 1) handlePagination();
+  }, [page]);
 
-        setGallery(prevState => [...prevState, ...galleryImages.hits]);
+  const handlePagination = useCallback(async () => {
+    setLoader(true);
+    try {
+      const galleryImages = await fetchGallery(searchValue, page);
 
-        if (page * 12 > galleryImages.totalHits) return setIsPhotoLeft(false);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoader(false);
-      }
-    };
+      setGallery(prevState => [...prevState, ...galleryImages.hits]);
 
-    if (searchValue && page !== 1) handlePagination();
+      if (page * 12 > galleryImages.totalHits) return setIsPhotoLeft(false);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoader(false);
+    }
   }, [page]);
 
   const handleClick = event => {
