@@ -10,11 +10,11 @@ export const useGallery = searchValue => {
 
   useEffect(() => {
     if (searchValue) handleSearch();
-  }, [searchValue, handleSearch]);
+  }, [searchValue]);
 
   useEffect(() => {
     if (searchValue && page !== 1) handlePagination();
-  }, [page, handlePagination]);
+  }, [page]);
 
   const handlePagination = async () => {
     setLoader(true);
