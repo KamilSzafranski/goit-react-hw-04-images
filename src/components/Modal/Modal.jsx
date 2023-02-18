@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { Overlay, ModalDiv } from "./Modal.styled";
 import PropTypes from "prop-types";
 
