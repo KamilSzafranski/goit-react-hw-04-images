@@ -50,11 +50,11 @@ export const useGallery = searchValue => {
 
   useEffect(() => {
     if (searchValue) handleSearch();
-  }, [handleSearch]);
+  }, [handleSearch, searchValue]);
 
   useEffect(() => {
     if (page !== 1) handlePagination();
-  }, [handlePagination]);
+  }, [handlePagination, page]);
 
   const handleClick = event => {
     event.preventDefault();
