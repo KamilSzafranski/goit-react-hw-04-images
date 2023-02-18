@@ -25,7 +25,7 @@ export const Gallery = ({ searchValue }) => {
 
   const modalImg = useMemo(
     () => gallery.filter(element => element.id === parseFloat(id)),
-    [id]
+    [id, gallery]
   );
 
   return (
