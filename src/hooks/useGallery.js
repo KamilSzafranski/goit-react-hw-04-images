@@ -8,39 +8,6 @@ export const useGallery = searchValue => {
   const [searchNothing, setSearchNothing] = useState(false);
   const [isPhotoLeft, setIsPhotoLeft] = useState(true);
 
-  useEffect(() => {
-    const handleSearch = async () => {
-      setLoader(true);
-      setSearchNothing(false);
-      setPage(() => 1);
-      setGallery(() => []);
-
-      console.log("handleSearch");
-
-      try {
-        const galleryImages = await fetchGallery(searchValue);
-        if (galleryImages.hits.length === 0) setSearchNothing(true);
-
-        setGallery(galleryImages.hits);
-
-        if (galleryImages.totalHits <= 12) {
-          setIsPhotoLeft(false);
-        } else {
-          setIsPhotoLeft(true);
-        }
-      } catch (error) {
-      } finally {
-        setLoader(false);
-      }
-    };
-
-    if (searchValue) handleSearch();
-  }, [searchValue]);
-
-  useEffect(() => {
-    if (page !== 1) handlePagination();
-  }, [page]);
-
   const handlePagination = useCallback(async () => {
     setLoader(true);
     try {
@@ -54,7 +21,40 @@ export const useGallery = searchValue => {
     } finally {
       setLoader(false);
     }
-  }, [page]);
+  }, [page, searchValue]);
+
+  const handleSearch = useCallback(async () => {
+    setLoader(true);
+    setSearchNothing(false);
+    setPage(() => 1);
+    setGallery(() => []);
+
+    console.log("handleSearch");
+
+    try {
+      const galleryImages = await fetchGallery(searchValue);
+      if (galleryImages.hits.length === 0) setSearchNothing(true);
+
+      setGallery(galleryImages.hits);
+
+      if (galleryImages.totalHits <= 12) {
+        setIsPhotoLeft(false);
+      } else {
+        setIsPhotoLeft(true);
+      }
+    } catch (error) {
+    } finally {
+      setLoader(false);
+    }
+  }, [searchValue]);
+
+  useEffect(() => {
+    if (searchValue) handleSearch();
+  }, [handleSearch]);
+
+  useEffect(() => {
+    if (page !== 1) handlePagination();
+  }, [handlePagination]);
 
   const handleClick = event => {
     event.preventDefault();
