@@ -9,52 +9,52 @@ export const useGallery = searchValue => {
   const [isPhotoLeft, setIsPhotoLeft] = useState(true);
 
   useEffect(() => {
+    const handleSearch = async () => {
+      setLoader(true);
+      setSearchNothing(false);
+      setPage(() => 1);
+      setGallery(() => []);
+
+      console.log("handleSearch");
+
+      try {
+        const galleryImages = await fetchGallery(searchValue);
+        if (galleryImages.hits.length === 0) setSearchNothing(true);
+
+        setGallery(galleryImages.hits);
+
+        if (galleryImages.totalHits <= 12) {
+          setIsPhotoLeft(false);
+        } else {
+          setIsPhotoLeft(true);
+        }
+      } catch (error) {
+      } finally {
+        setLoader(false);
+      }
+    };
+
     if (searchValue) handleSearch();
   }, [searchValue]);
 
   useEffect(() => {
+    const handlePagination = async () => {
+      setLoader(true);
+      try {
+        const galleryImages = await fetchGallery(searchValue, page);
+
+        setGallery(prevState => [...prevState, ...galleryImages.hits]);
+
+        if (page * 12 > galleryImages.totalHits) return setIsPhotoLeft(false);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoader(false);
+      }
+    };
+
     if (searchValue && page !== 1) handlePagination();
   }, [page]);
-
-  const handlePagination = async () => {
-    setLoader(true);
-    try {
-      const galleryImages = await fetchGallery(searchValue, page);
-
-      setGallery(prevState => [...prevState, ...galleryImages.hits]);
-
-      if (page * 12 > galleryImages.totalHits) return setIsPhotoLeft(false);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoader(false);
-    }
-  };
-
-  const handleSearch = async () => {
-    setLoader(true);
-    setSearchNothing(false);
-    setPage(() => 1);
-    setGallery(() => []);
-
-    console.log("handleSearch");
-
-    try {
-      const galleryImages = await fetchGallery(searchValue);
-      if (galleryImages.hits.length === 0) setSearchNothing(true);
-
-      setGallery(galleryImages.hits);
-
-      if (galleryImages.totalHits <= 12) {
-        setIsPhotoLeft(false);
-      } else {
-        setIsPhotoLeft(true);
-      }
-    } catch (error) {
-    } finally {
-      setLoader(false);
-    }
-  };
 
   const handleClick = event => {
     event.preventDefault();
