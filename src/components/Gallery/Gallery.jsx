@@ -17,9 +17,9 @@ import PropTypes from "prop-types";
 import { useGallery } from "hooks/useGallery";
 import { useModal } from "hooks/useModal";
 
-export const Gallery = ({ searchValue }) => {
-  const { gallery, page, loader, searchNothing, isPhotoLeft, handleClick } =
-    useGallery(searchValue);
+export const Gallery = ({ searchValue, page, handlePage }) => {
+  const { gallery, loader, searchNothing, isPhotoLeft, handleClick } =
+    useGallery(searchValue, page, handlePage);
 
   const { id, handleCloseModal, handleModal } = useModal();
 

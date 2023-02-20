@@ -1,14 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { fetchGallery } from "services/api";
 
-export const useGallery = searchValue => {
+export const useGallery = (searchValue, page, callbackSetPage) => {
   const [gallery, setGallery] = useState([]);
-  const [page, setPage] = useState(1);
   const [loader, setLoader] = useState(false);
   const [searchNothing, setSearchNothing] = useState(false);
   const [isPhotoLeft, setIsPhotoLeft] = useState(true);
 
   const handlePagination = useCallback(async () => {
+    console.log("pagintion");
     setLoader(true);
     try {
       const galleryImages = await fetchGallery(searchValue, page);
@@ -26,11 +26,8 @@ export const useGallery = searchValue => {
   const handleSearch = useCallback(async () => {
     setLoader(true);
     setSearchNothing(false);
-    setPage(() => 1);
     setGallery(() => []);
-
-    console.log("handleSearch");
-
+    console.log("search");
     try {
       const galleryImages = await fetchGallery(searchValue);
       if (galleryImages.hits.length === 0) setSearchNothing(true);
@@ -58,7 +55,7 @@ export const useGallery = searchValue => {
 
   const handleClick = event => {
     event.preventDefault();
-    setPage(prevState => prevState + 1);
+    callbackSetPage(prevState => prevState + 1);
   };
 
   return {

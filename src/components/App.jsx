@@ -5,31 +5,32 @@ import { Warning } from "./App.styled";
 
 export const App = () => {
   const [inputValue, setInputValue] = useState("");
-  const [defaultValue, setDefaultValue] = useState(false);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     setInputValue("");
-    setDefaultValue(true);
   }, []);
 
   const handleSubmit = async event => {
     event.preventDefault();
+    setPage(1);
     const { Search } = event.currentTarget.elements;
-    if (!Search.value) return;
+    if (!Search.value) return setInputValue("");
 
     setInputValue(Search.value.trim());
-    setDefaultValue(false);
   };
 
   return (
     <div>
       <Searchbar handleSubmit={handleSubmit} />
-      {defaultValue && (
+      {!inputValue && (
         <Warning>
           Gallery is empty. Please write somting in Input! &#x1F609;
         </Warning>
       )}
-      <Gallery searchValue={inputValue} />
+      {inputValue && (
+        <Gallery searchValue={inputValue} page={page} handlePage={setPage} />
+      )}
     </div>
   );
 };
